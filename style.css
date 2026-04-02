@@ -16,6 +16,15 @@ header {
     padding: 30px 20px;
     text-align: center;
 }
+header h1 {
+    color: #ffffff;
+    margin: 0;
+}
+
+header h3 {
+    color: #bdc3c7;
+    margin: 10px 0 0 0;
+}
 
 nav {
     background: #ecf0f1;

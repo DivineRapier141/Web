@@ -2,10 +2,17 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <title>Зворотній зв’язок - Світова архітектура</title>
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Пам'ятки світу</title>
 </head>
 <body>
+    <header>
+        <h1>Світова архітектура</h1>
+        <h3>Довідник найвідоміших споруд людства</h3>
+    </header>
     <nav>
+        <h3>Навігація по сайту</h3>
         <ul>
             <li><a href="index.html">Головна</a></li>
             <li><a href="login.html">Вхід</a></li>
@@ -13,55 +20,56 @@
             <li><a href="feedback.html">Зворотній зв’язок</a></li>
         </ul>
     </nav>
-    <hr>
-    <main>
-        <h2>Зворотній зв’язок</h2>
-        <form action="#" method="post" enctype="multipart/form-data">
-            <p>
-                <label for="first_name">Ім’я:</label><br>
-                <input type="text" id="first_name" name="first_name" required>
-            </p>
-            <p>
-                <label for="last_name">Прізвище:</label><br>
-                <input type="text" id="last_name" name="last_name" required>
-            </p>
-            <p>
-                <label for="user_email">Електронна пошта:</label><br>
-                <input type="email" id="user_email" name="user_email" required>
-            </p>
-            <p>
-                <label for="phone">Номер телефону:</label><br>
-                <input type="tel" id="phone" name="phone">
-            </p>
-            <p>
-                <label for="message">Текст повідомлення:</label><br>
-                <textarea id="message" name="message" rows="4" cols="30" required></textarea>
-            </p>
-            <fieldset>
-                <legend>Бажаний спосіб зв'язку:</legend>
-                <input type="radio" id="contact_phone" name="contact_method" value="phone">
-                <label for="contact_phone">Телефон</label><br>
-                <input type="radio" id="contact_email" name="contact_method" value="email" checked>
-                <label for="contact_email">Електронна пошта</label>
-            </fieldset>
-            <p>
-                <label for="msg_type">Тип повідомлення:</label><br>
-                <select id="msg_type" name="msg_type">
-                    <option value="question">Питання</option>
-                    <option value="suggestion">Побажання</option>
-                    <option value="complaint">Скарга</option>
-                    <option value="other">Інше</option>
-                </select>
-            </p>
-            <p>
-                <label for="file_upload">Додати зображення:</label><br>
-                <input type="file" id="file_upload" name="file_upload" accept="image/*">
-            </p>
-            <button type="submit">Відправити</button>
-        </form>
-    </main>
+    <div class="container">    
+        <main>
+            <h2>Статті про пам'ятки</h2>
+            <article id="eiffel">
+                <h3>1. Ейфелева вежа</h3>
+                <img src="https://images.unsplash.com/photo-1511739001486-6bfe10ce785f?w=300" alt="Ейфелева вежа в Парижі">
+                <p>Ейфелева вежа — найвпізнаваніша архітектурна пам'ятка Парижа, побудована як тимчасова споруда для Всесвітньої виставки 1889 року. Її висота становить близько 300 метрів.</p>
+                <p><a href="https://uk.wikipedia.org/wiki/Ейфелева_вежа" target="_blank">Дізнатися більше про історію вежі</a></p>
+            </article>
+
+            <article id="pyramids">
+                <h3>2. Єгипетські піраміди</h3>
+                <img src="https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?w=300" alt="Великі піраміди Гізи">
+                <p>Піраміди Гізи — це єдине з Семи чудес світу, яке збереглося до нашого часу. Вони були збудовані понад 4500 років тому як усипальниці для давньоєгипетських фараонів.</p>
+                <p><a href="https://uk.wikipedia.org/wiki/Піраміди_Гізи" target="_blank">Дізнатися більше про піраміди</a></p>
+            </article>
+
+            <article id="liberty">
+                <h3>3. Статуя Свободи</h3>
+                <img src="https://images.unsplash.com/photo-1605130284535-11dd9eedc58a?w=300" alt="Статуя Свободи в Нью-Йорку">
+                <p>Статуя Свободи розташована на острові Свободи в Нью-Йорку. Це монументальна споруда, що символізує дружбу між США та Францією та ідею демократичних свобод.</p>
+                <p><a href="https://uk.wikipedia.org/wiki/Статуя_Свободи" target="_blank">Дізнатися більше про статую</a></p>
+            </article>
+
+            <article id="colosseum">
+                <h3>4. Колізей</h3>
+                <img src="https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=300" alt="Римський Колізей">
+                <p>Колізей — найбільший амфітеатр Стародавнього Риму, символ величі Римської імперії. Він міг вміщувати до 50 тисяч глядачів, які спостерігали за гладіаторськими боями.</p>
+                <p><a href="https://uk.wikipedia.org/wiki/Колізей" target="_blank">Історія Колізею</a></p>
+            </article>
+
+            <article id="wall">
+                <h3>5. Великий китайський мур</h3>
+                <img src="https://images.unsplash.com/photo-1508804185872-d7badad00f7d?w=300" alt="Великий китайський мур">
+                <p>Великий китайський мур — одна з найбільших будівельних споруд у світі. Вона простягається на тисячі кілометрів через Північний Китай і була збудована для захисту від кочових племен.</p>
+                <p><a href="https://uk.wikipedia.org/wiki/Великий_китайський_мур" target="_blank">Детальніше про Великий мур</a></p>
+            </article>
+        </main>
+        <aside>
+            <h3>Список усіх статей</h3>
+            <ol>
+                <li><a href="#eiffel">Ейфелева вежа</a></li>
+                <li><a href="#pyramids">Єгипетські піраміди</a></li>
+                <li><a href="#liberty">Статуя Свободи</a></li>
+                <li><a href="#colosseum">Колізей</a></li>
+                <li><a href="#wall">Великий китайський мур</a></li>
+            </ol>
+        </aside>
+    </div> 
     <footer>
-        <hr>
         <p>2026 Лабораторна 1</p>
     </footer>
 </body>

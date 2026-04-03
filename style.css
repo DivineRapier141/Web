@@ -28,10 +28,17 @@ nav {
     text-align: center;
     border-bottom: 1px solid #dcdde1;
     position: relative;
-    z-index: 100;
+    z-index: 1000;
 }
 
-nav h3 { display: none; } 
+nav h3 { 
+    display: none; 
+    margin: 0;
+    padding: 15px;
+    background: #34495e;
+    color: white;
+    cursor: pointer;
+}
 
 nav ul {
     list-style: none;
@@ -47,9 +54,13 @@ nav a {
     color: #2980b9;
     font-weight: bold;
     transition: 0.3s;
+    display: block;
+    padding: 5px 10px;
 }
 
-nav a:hover { color: #c0392b; }
+nav a:hover { 
+    color: #c0392b; 
+}
 
 .container {
     display: flex;
@@ -92,6 +103,7 @@ main {
     max-width: 500px; 
     margin: 40px auto; 
     width: 90%;
+    box-sizing: border-box;
 }
 
 article {
@@ -108,23 +120,44 @@ article img {
     border-radius: 4px;
 }
 
-form input[type="text"],
-form input[type="email"],
-form input[type="password"],
-form input[type="tel"],
-form textarea,
-form select {
+h2, h3 {
+    text-align: center;
+    color: #2c3e50;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"],
+textarea,
+select {
     width: 100%;
     padding: 12px;
     margin: 10px 0;
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
+    font-family: inherit;
 }
 
-input[type="radio"], input[type="checkbox"] {
+input[type="radio"], 
+input[type="checkbox"] {
     width: auto !important;
-    margin-right: 5px;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+label {
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+fieldset {
+    margin: 20px 0;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    text-align: left;
 }
 
 button {
@@ -137,67 +170,96 @@ button {
     cursor: pointer;
     transition: 0.4s;
     color: white;
+    font-family: inherit;
 }
 
-button[type="submit"] { background-color: #3498db; }
-button[type="submit"]:hover { background-color: #27ae60; }
-button[type="reset"] { background-color: #95a5a6; }
-button[type="reset"]:hover { background-color: #e67e22; }
+button[type="submit"] { 
+    background-color: #3498db; 
+}
 
-@media (max-width: 768px) {
-    nav h3 {
-        display: block;
-        background: #34495e;
-        color: white;
-        padding: 15px;
-        margin: 0;
-        cursor: pointer;
-    }
-    nav ul {
-        display: none;
-        flex-direction: column;
-        background: #ecf0f1;
-    }
-    nav:hover ul { display: flex; }
+button[type="submit"]:hover { 
+    background-color: #27ae60; 
+}
 
-    .container {
-        flex-direction: column;
-        padding: 0 10px;
-    }
+button[type="reset"] { 
+    background-color: #95a5a6; 
+}
 
-    .container aside {
-        order: 1;
-        width: 100%;
-        box-sizing: border-box;
-    }
-
-    .container aside ol {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        justify-content: center;
-        padding: 0;
-    }
-
-    .container main {
-        order: 2;
-        grid-template-columns: 1fr;
-    }
-
-    .container main h2 {
-        grid-column: 1;
-    }
-
-    main {
-        margin: 20px auto;
-        width: 95%;
-    }
+button[type="reset"]:hover { 
+    background-color: #e67e22; 
 }
 
 footer {
     text-align: center;
     padding: 20px;
     background: #2c3e50;
-    color: white;
+    color: #bdc3c7;
     margin-top: auto;
+}
+
+@media (max-width: 768px) {
+    nav { 
+        padding: 0; 
+    }
+    
+    nav h3 { 
+        display: block; 
+    }
+
+    nav ul {
+        display: none;
+        flex-direction: column;
+        background: #ecf0f1;
+        width: 100%;
+    }
+
+    nav:hover ul {
+        display: flex;
+    }
+
+    nav ul li {
+        border-bottom: 1px solid #ddd;
+    }
+
+    nav a { 
+        padding: 15px; 
+    }
+
+    .container {
+        flex-direction: column;
+        padding: 0 15px;
+    }
+
+    .container aside {
+        order: 1;
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    aside ol {
+        display: block; 
+        padding-left: 25px;
+        text-align: left;
+    }
+
+    aside ol li {
+        margin-bottom: 10px;
+    }
+
+    .container main {
+        order: 2;
+        grid-template-columns: 1fr;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .container main h2 {
+        grid-column: auto;
+    }
+
+    main {
+        width: 95%;
+        margin: 20px auto;
+    }
 }

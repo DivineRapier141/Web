@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Реєстрація - Світова архітектура</title>
+</head>
+<body>
+    <header>
+        <h1>Світова архітектура</h1>
+        <h3>Довідник найвідоміших споруд людства</h3>
+    </header>
+
+    <nav>
+        <input type="checkbox" id="menu-toggle" class="menu-checkbox">
+        <label for="menu-toggle" class="mobile-menu-btn" onclick="">Меню</label>
+        <ul>
+            <li><a href="index.html">Головна</a></li>
+            <li><a href="login.html">Вхід</a></li>
+            <li><a href="register.html">Реєстрація</a></li>
+            <li><a href="feedback.html">Зворотній зв’язок</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <h2>Реєстрація нового користувача</h2>
+        <form action="#" method="post">
+            <p>
+                <label for="email">Електронна пошта:</label><br>
+                <input type="email" id="email" name="email" required>
+            </p>
+            <p>
+                <label for="reg_login">Логін:</label><br>
+                <input type="text" id="reg_login" name="reg_login" required>
+            </p>
+            <p>
+                <label for="reg_password">Пароль:</label><br>
+                <input type="password" id="reg_password" name="reg_password" required>
+            </p>
+            <p>
+                <label for="confirm_password">Підтвердження пароля:</label><br>
+                <input type="password" id="confirm_password" name="confirm_password" required>
+            </p>
+            <button type="submit">Зареєструватися</button>
+            <button type="reset">Очистити форму</button>
+        </form>
+    </main>
+
+    <footer>
+        <p>2026 Лабораторна 1</p>
+    </footer>
+</body>
+</html>

@@ -68,7 +68,6 @@ nav ul li a:hover {
     z-index: -1;
 }
 
-/* Ховаємо кнопку на ПК */
 .mobile-menu-btn {
     display: none;
 }

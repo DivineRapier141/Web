@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Доставка</title>
+</head>
+<body>
+    <h2>Форма доставки</h2>
+    <form onsubmit="return calculateShipping()">
+        <label>Вартість товару (грн):</label>
+        <input type="number" id="cost" required><br><br>
+
+        <label>Маса товару (кг):</label>
+        <input type="number" id="weight" step="0.1" required><br><br>
+
+        <input type="checkbox" id="insurance">
+        <label for="insurance">Застрахувати товар (2% від вартості)</label><br><br>
+
+        <button type="submit">Розрахувати загальну вартість</button>
+    </form>
+
+    <script>
+    function calculateShipping() {
+        const cost = parseFloat(document.getElementById('cost').value);
+        const weight = parseFloat(document.getElementById('weight').value);
+        const insuranceChecked = document.getElementById('insurance').checked;
+
+        let basePrice = 0;
+
+        if (weight <= 2) {
+            basePrice = 40;
+        } else if (weight <= 10) {
+            basePrice = 60;
+        } else if (weight <= 30) {
+            basePrice = 80;
+        } else {
+            alert('Маса перевищує ліміт 30 кг.');
+            return false;
+        }
+
+        let insurancePrice = 0;
+        if (insuranceChecked === true) {
+            insurancePrice = cost * 0.02;
+        }
+
+        const totalPrice = cost + basePrice + insurancePrice;
+        alert('Загальна вартість доставки: ' + totalPrice + ' грн');
+
+        return false;
+    }
+    </script>
+</body>
+</html>

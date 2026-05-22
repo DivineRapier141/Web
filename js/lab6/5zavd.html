@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Тренажер арифметичних операцій</title>
+</head>
+<body>
+    <h2>Тренажер арифметичних операцій</h2>
+    
+    <div>
+        <p>Цифра 1: <span id="num1">0</span></p>
+        <p>Операція: <span id="op">+</span></p>
+        <p>Цифра 2: <span id="num2">0</span></p>
+        
+        <label>Відповідь:</label>
+        <input type="number" id="user_ans"><br><br>
+        
+        <button onclick="checkResult()">Check</button>
+        <button onclick="generateNext()">Next</button>
+    </div>
+
+    <script>
+    let firstNumber = 0;
+    let secondNumber = 0;
+    let currentOperation = '';
+    let correctAnswer = 0;
+
+    function generateNext() {
+        document.getElementById('user_ans').value = '';
+
+        firstNumber = Math.floor(Math.random() * 10) + 1;
+        secondNumber = Math.floor(Math.random() * 10) + 1;
+
+        const operations = ['+', '-', '*'];
+        const opIndex = Math.floor(Math.random() * operations.length);
+        currentOperation = operations[opIndex];
+
+        document.getElementById('num1').innerText = firstNumber;
+        document.getElementById('num2').innerText = secondNumber;
+        document.getElementById('op').innerText = currentOperation;
+
+        if (currentOperation === '+') {
+            correctAnswer = firstNumber + secondNumber;
+        } else if (currentOperation === '-') {
+            correctAnswer = firstNumber - secondNumber;
+        } else if (currentOperation === '*') {
+            correctAnswer = firstNumber * secondNumber;
+        }
+    }
+
+    function checkResult() {
+        const userAns = parseInt(document.getElementById('user_ans').value);
+
+        if (isNaN(userAns)) {
+            alert('Введіть відповідь.');
+            return;
+        }
+
+        if (userAns === correctAnswer) {
+            alert('Результат: Правильно');
+        } else {
+            alert('Результат: Неправильно (Правильно: ' + correctAnswer + ')');
+        }
+    }
+
+    window.onload = function() {
+        generateNext();
+    };
+    </script>
+</body>
+</html>

@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Управління АЗС</title>
+</head>
+<body>
+
+    <h1>Управління АЗС</h1>
+    <hr>
+
+    <h2>Запит: Пошук пального на АЗС фірми Х</h2>
+    <form id="searchForm" onsubmit="handleSearch(event)">
+        <label>Фірма-власник (Х):</label>
+        <input type="text" id="searchCompany" value="WOG" required>
+        
+        <label>Марка пального:</label>
+        <select id="searchFuel">
+            <option value="А-92">А-92</option>
+            <option value="А-95">А-95</option>
+            <option value="А-98">А-98</option>
+            <option value="А-100" selected>А-100</option>
+            <option value="Дизель">Дизель</option>
+        </select>
+
+        <button type="submit">Виконати запит</button>
+        <button type="button" onclick="resetSearch()">Скинути фільтр</button>
+    </form>
+
+    <hr>
+
+    <h2>Список АЗС</h2>
+    <table border="1" cellpadding="5" cellspacing="0" id="stationsTable">
+        <thead>
+            <tr>
+                <th>Код</th>
+                <th>Фірма-власник</th>
+                <th>Адреса</th>
+                <th>Запаси (літри)</th>
+                <th>Ціни (грн/л)</th>
+                <th>Дії</th>
+            </tr>
+        </thead>
+        <tbody id="stationsTableBody">
+        </tbody>
+    </table>
+
+    <hr>
+
+    <h2 id="formTitle">Додати нову АЗС</h2>
+    <form id="stationForm" onsubmit="handleFormSubmit(event)">
+        <input type="hidden" id="formMode" value="add">
+
+        <p>
+            <label>Код АЗС:</label><br>
+            <input type="text" id="stationCode" required>
+        </p>
+        <p>
+            <label>Фірма-власник:</label><br>
+            <input type="text" id="stationOwner" required>
+        </p>
+        <p>
+            <label>Адреса:</label><br>
+            <input type="text" id="stationAddress" required>
+        </p>
+
+        <h3>Запаси та ціни пального:</h3>
+        <table border="1" cellpadding="3">
+            <tr>
+                <th>Марка</th>
+                <th>Запаси (літри)</th>
+                <th>Ціна (грн)</th>
+            </tr>
+            <tr>
+                <td>А-92</td>
+                <td><input type="number" id="stock92" value="0" min="0"></td>
+                <td><input type="number" id="price92" value="0" step="0.01" min="0"></td>
+            </tr>
+            <tr>
+                <td>А-95</td>
+                <td><input type="number" id="stock95" value="0" min="0"></td>
+                <td><input type="number" id="price95" value="0" step="0.01" min="0"></td>
+            </tr>
+            <tr>
+                <td>А-98</td>
+                <td><input type="number" id="stock98" value="0" min="0"></td>
+                <td><input type="number" id="price98" value="0" step="0.01" min="0"></td>
+            </tr>
+            <tr>
+                <td>А-100</td>
+                <td><input type="number" id="stock100" value="0" min="0"></td>
+                <td><input type="number" id="price100" value="0" step="0.01" min="0"></td>
+            </tr>
+            <tr>
+                <td>Дизель</td>
+                <td><input type="number" id="stockDiesel" value="0" min="0"></td>
+                <td><input type="number" id="priceDiesel" value="0" step="0.01" min="0"></td>
+            </tr>
+        </table>
+        
+        <br>
+        <button type="submit" id="submitBtn">Зберегти АЗС</button>
+        <button type="button" id="cancelBtn" onclick="resetForm()" style="display:none;">Скасувати редагування</button>
+    </form>
+
+    <script>
+        class GasStation {
+            constructor(code, address, ownerCompany, stocks, prices) {
+                this.code = code;
+                this.address = address;
+                this.ownerCompany = ownerCompany;
+                this.stocks = stocks; 
+                this.prices = prices; 
+            }
+        }
+
+        class GasStationCollection {
+            constructor() {
+                this.stations = [];
+            }
+
+            getStationByCode(code) {
+                for (let i = 0; i < this.stations.length; i++) {
+                    if (this.stations[i].code === code) {
+                        return this.stations[i];
+                    }
+                }
+                return null;
+            }
+
+            filterByFuelAndCompany(fuelType, companyName) {
+                const result = [];
+                for (let i = 0; i < this.stations.length; i++) {
+                    const currentStation = this.stations[i];
+                    const nameMatches = currentStation.ownerCompany.toLowerCase().trim() === companyName.toLowerCase().trim();
+                    const hasFuel = currentStation.stocks[fuelType] && currentStation.stocks[fuelType] > 0;
+
+                    if (nameMatches && hasFuel) {
+                        result.push(currentStation);
+                    }
+                }
+                return result;
+            }
+
+            addStation(station) {
+                if (this.getStationByCode(station.code) !== null) {
+                    alert("Помилка: АЗС з кодом " + station.code + " вже існує.");
+                    return false;
+                }
+                this.stations.push(station);
+                return true;
+            }
+
+            addCollection(stationsArray) {
+                for (let i = 0; i < stationsArray.length; i++) {
+                    this.addStation(stationsArray[i]);
+                }
+            }
+
+            editStation(code, updatedData) {
+                const station = this.getStationByCode(code);
+                if (station === null) {
+                    return false;
+                }
+                if (updatedData.ownerCompany !== undefined) {
+                    station.ownerCompany = updatedData.ownerCompany;
+                }
+                if (updatedData.address !== undefined) {
+                    station.address = updatedData.address;
+                }
+                if (updatedData.stocks !== undefined) {
+                    station.stocks = updatedData.stocks;
+                }
+                if (updatedData.prices !== undefined) {
+                    station.prices = updatedData.prices;
+                }
+                return true;
+            }
+
+            deleteStation(code) {
+                for (let i = 0; i < this.stations.length; i++) {
+                    if (this.stations[i].code === code) {
+                        this.stations.splice(i, 1);
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
+
+        const collection = new GasStationCollection();
+        let filteredStations = null;
+
+        collection.addCollection([
+            new GasStation('101', 'вул. Зелена, 12', 'WOG', 
+                {'А-92': 1500, 'А-95': 4000, 'А-98': 800, 'А-100': 1200, 'Дизель': 5000}, 
+                {'А-92': 56.50, 'А-95': 59.90, 'А-98': 64.00, 'А-100': 69.90, 'Дизель': 58.00}
+            ),
+            new GasStation('102', 'пр. Миру, 5', 'OKKO', 
+                {'А-92': 0, 'А-95': 6000, 'А-98': 1200, 'А-100': 0, 'Дизель': 7000}, 
+                {'А-92': 0, 'А-95': 60.50, 'А-98': 65.00, 'А-100': 0, 'Дизель': 58.50}
+            ),
+            new GasStation('103', 'вул. Стрийська, 40', 'WOG', 
+                {'А-92': 2000, 'А-95': 0, 'А-98': 0, 'А-100': 2500, 'Дизель': 0}, 
+                {'А-92': 55.00, 'А-95': 0, 'А-98': 0, 'А-100': 71.00, 'Дизель': 0}
+            )
+        ]);
+
+        function renderTable() {
+            const tbody = document.getElementById('stationsTableBody');
+            tbody.innerHTML = '';
+
+            let listToShow = [];
+            if (filteredStations !== null) {
+                listToShow = filteredStations;
+            } else {
+                listToShow = collection.stations;
+            }
+
+            if (listToShow.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" align="center">Нічого не знайдено</td></tr>';
+                return;
+            }
+
+            for (let i = 0; i < listToShow.length; i++) {
+                const station = listToShow[i];
+                const tr = document.createElement('tr');
+
+                const stocksText = "А-92: " + (station.stocks['А-92'] || 0) + " л<br>" +
+                                   "А-95: " + (station.stocks['А-95'] || 0) + " л<br>" +
+                                   "А-98: " + (station.stocks['А-98'] || 0) + " л<br>" +
+                                   "А-100: " + (station.stocks['А-100'] || 0) + " л<br>" +
+                                   "Дизель: " + (station.stocks['Дизель'] || 0) + " л";
+
+                const pricesText = "А-92: " + (station.prices['А-92'] || 0) + " грн<br>" +
+                                   "А-95: " + (station.prices['А-95'] || 0) + " грн<br>" +
+                                   "А-98: " + (station.prices['А-98'] || 0) + " грн<br>" +
+                                   "А-100: " + (station.prices['А-100'] || 0) + " грн<br>" +
+                                   "Дизель: " + (station.prices['Дизель'] || 0) + " грн";
+
+                tr.innerHTML = '<td><b>' + station.code + '</b></td>' +
+                               '<td>' + station.ownerCompany + '</td>' +
+                               '<td>' + station.address + '</td>' +
+                               '<td>' + stocksText + '</td>' +
+                               '<td>' + pricesText + '</td>' +
+                               '<td>' +
+                                   '<button onclick="startEdit(\'' + station.code + '\')">Редагувати</button> ' +
+                                   '<button onclick="handleDelete(\'' + station.code + '\')">Видалити</button>' +
+                               '</td>';
+                tbody.appendChild(tr);
+            }
+        }
+
+        function handleSearch(event) {
+            event.preventDefault();
+            const company = document.getElementById('searchCompany').value;
+            const fuel = document.getElementById('searchFuel').value;
+
+            filteredStations = collection.filterByFuelAndCompany(fuel, company);
+            renderTable();
+        }
+
+        function resetSearch() {
+            filteredStations = null;
+            document.getElementById('searchForm').reset();
+            renderTable();
+        }
+
+        function handleDelete(code) {
+            if (confirm("Ви дійсно хочете видалити АЗС з кодом " + code + "?")) {
+                collection.deleteStation(code);
+                if (filteredStations !== null) {
+                    resetSearch();
+                } else {
+                    renderTable();
+                }
+            }
+        }
+
+        function startEdit(code) {
+            const station = collection.getStationByCode(code);
+            if (station === null) return;
+
+            document.getElementById('formMode').value = 'edit';
+            document.getElementById('formTitle').innerText = "Редагувати АЗС (Код: " + code + ")";
+            document.getElementById('stationCode').value = station.code;
+            document.getElementById('stationCode').disabled = true; 
+            document.getElementById('stationOwner').value = station.ownerCompany;
+            document.getElementById('stationAddress').value = station.address;
+
+            document.getElementById('stock92').value = station.stocks['А-92'] || 0;
+            document.getElementById('price92').value = station.prices['А-92'] || 0;
+            document.getElementById('stock95').value = station.stocks['А-95'] || 0;
+            document.getElementById('price95').value = station.prices['А-95'] || 0;
+            document.getElementById('stock98').value = station.stocks['А-98'] || 0;
+            document.getElementById('price98').value = station.prices['А-98'] || 0;
+            document.getElementById('stock100').value = station.stocks['А-100'] || 0;
+            document.getElementById('price100').value = station.prices['А-100'] || 0;
+            document.getElementById('stockDiesel').value = station.stocks['Дизель'] || 0;
+            document.getElementById('priceDiesel').value = station.prices['Дизель'] || 0;
+
+            document.getElementById('submitBtn').innerText = "Зберегти зміни";
+            document.getElementById('cancelBtn').style.display = "inline";
+        }
+
+        function resetForm() {
+            document.getElementById('stationForm').reset();
+            document.getElementById('formMode').value = 'add';
+            document.getElementById('formTitle').innerText = "Додати нову АЗС";
+            document.getElementById('stationCode').disabled = false;
+            document.getElementById('submitBtn').innerText = "Зберегти АЗС";
+            document.getElementById('cancelBtn').style.display = "none";
+        }
+
+        function handleFormSubmit(event) {
+            event.preventDefault();
+
+            const mode = document.getElementById('formMode').value;
+            const code = document.getElementById('stationCode').value;
+            const owner = document.getElementById('stationOwner').value;
+            const address = document.getElementById('stationAddress').value;
+
+            const stocks = {
+                'А-92': parseFloat(document.getElementById('stock92').value) || 0,
+                'А-95': parseFloat(document.getElementById('stock95').value) || 0,
+                'А-98': parseFloat(document.getElementById('stock98').value) || 0,
+                'А-100': parseFloat(document.getElementById('stock100').value) || 0,
+                'Дизель': parseFloat(document.getElementById('stockDiesel').value) || 0
+            };
+            const prices = {
+                'А-92': parseFloat(document.getElementById('price92').value) || 0,
+                'А-95': parseFloat(document.getElementById('price95').value) || 0,
+                'А-98': parseFloat(document.getElementById('price98').value) || 0,
+                'А-100': parseFloat(document.getElementById('price100').value) || 0,
+                'Дизель': parseFloat(document.getElementById('priceDiesel').value) || 0
+            };
+
+            if (mode === 'add') {
+                const newStation = new GasStation(code, address, owner, stocks, prices);
+                if (collection.addStation(newStation)) {
+                    resetForm();
+                }
+            } else if (mode === 'edit') {
+                collection.editStation(code, {
+                    ownerCompany: owner,
+                    address: address,
+                    stocks: stocks,
+                    prices: prices
+                });
+                resetForm();
+            }
+
+            resetSearch(); 
+        }
+
+        renderTable();
+    </script>
+</body>
+</html>

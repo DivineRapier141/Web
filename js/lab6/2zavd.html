@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Пошук предмета</title>
+</head>
+<body>
+    <h2>Пошук зображення предмета</h2>
+    <form onsubmit="return searchItem()">
+        <label>Введіть назву предмета:</label>
+        <input type="text" id="item_name" required><br><br>
+        <button type="submit">Знайти</button>
+    </form>
+    
+    <br>
+    <img id="result_img" src="" alt="" style="max-width: 300px; display: none;">
+
+    <script>
+    function searchItem() {
+        const query = document.getElementById('item_name').value.toLowerCase();
+        const imgElement = document.getElementById('result_img');
+        
+        const names = [
+            'ейфелева вежа', 
+            'колізей', 
+            'біг-бен', 
+            'статуя свободи', 
+            'сфінкс', 
+            'піраміда хеопса'
+        ];
+        
+        const urls = [
+            'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=400',
+            'https://italy4.me/wp-content/uploads/2020/02/Kolizej-v-Rime-colloseo.jpg',
+            'https://pohcdn.com/sites/default/files/styles/paragraph__hero_banner__hb_image__1880bp/public/hero_banner/big-ben_1.jpg',
+            'https://images.pexels.com/photos/356844/pexels-photo-356844.jpeg?auto=compress&cs=tinysrgb&w=400',
+            'https://upload.wikimedia.org/wikipedia/commons/4/42/Sphinx_with_the_third_pyramid.jpg',
+            'https://images.pexels.com/photos/71241/pexels-photo-71241.jpeg?auto=compress&cs=tinysrgb&w=400'
+        ];
+
+        const index = names.indexOf(query);
+
+        if (index !== -1) {
+            imgElement.src = urls[index];
+            imgElement.style.display = 'block';
+        } else {
+            imgElement.style.display = 'none';
+            alert('Предмет не знайдено в масиві.');
+        }
+
+        return false;
+    }
+    </script>
+</body>
+</html>

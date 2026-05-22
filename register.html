@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Реєстрація - Світова архітектура</title>
+</head>
+<body>
+    <header>
+        <h1>Світова архітектура</h1>
+        <h3>Довідник найвідоміших споруд людства</h3>
+    </header>
+
+    <nav>
+        <input type="checkbox" id="menu-toggle" class="menu-checkbox">
+        <label for="menu-toggle" class="mobile-menu-btn">Меню</label>
+        <div class="nav-links">
+            <a href="index.html">Головна</a>
+            <a href="login.html">Вхід</a>
+            <a href="register.html">Реєстрація</a>
+            <a href="feedback.html">Зворотній зв’язок</a>
+        </div>
+    </nav>
+
+    <main>
+        <h2>Реєстрація нового користувача</h2>
+        <form action="#" method="post" onsubmit="return validateRegister()">
+            <p>
+                <label for="email">Електронна пошта:</label><br>
+                <input type="email" id="email" name="email" required>
+            </p>
+            <p>
+                <label for="reg_login">Логін:</label><br>
+                <input type="text" id="reg_login" name="reg_login" required>
+            </p>
+            <p>
+                <label for="reg_password">Пароль:</label><br>
+                <input type="password" id="reg_password" name="reg_password" required>
+            </p>
+            <p>
+                <label for="confirm_password">Підтвердження пароля:</label><br>
+                <input type="password" id="confirm_password" name="confirm_password" required>
+            </p>
+            <button type="submit">Зареєструватися</button>
+            <button type="reset">Очистити форму</button>
+        </form>
+    </main>
+
+    <footer>
+        <p>2026 Лабораторна 1</p>
+    </footer>
+
+    <script>
+    function validateRegister() {
+        const email = document.getElementById('email').value;
+        const login = document.getElementById('reg_login').value;
+        const password = document.getElementById('reg_password').value;
+        const confirmPassword = document.getElementById('confirm_password').value;
+
+        if (password.length < 6) {
+            alert('Помилка: Пароль повинен містити щонайменше 6 символів.');
+            return false;
+        }
+
+        if (login === password) {
+            alert('Помилка: Логін та пароль не можуть співпадати.');
+            return false;
+        }
+
+        const busyLogins = ['admin', 'user123', 'moderator'];
+        if (busyLogins.indexOf(login) !== -1) {
+            alert('Помилка: Цей логін уже зайнятий.');
+            return false;
+        }
+
+        if (password.indexOf(email) !== -1) {
+            alert('Помилка: Пароль не може містити електронну пошту.');
+            return false;
+        }
+
+        if (password !== confirmPassword) {
+            alert('Помилка: Пароль не співпадає з введеним у поле підтвердження.');
+            return false;
+        }
+
+        alert('Реєстрація успішна!');
+        return true;
+    }
+    </script>
+</body>
+</html>
